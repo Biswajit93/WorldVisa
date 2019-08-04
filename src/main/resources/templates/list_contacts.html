@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="header :: header">
+
+<title>World Visa | List Contacts</title>
+
+
+
+
+<!-- Start page Label Plugins 
+        =====================================================================-->
+<!-- dataTables css -->
+<link href="assets/datatables/dataTables.min.css" rel="stylesheet"
+	type="text/css" />
+<!-- End page Label Plugins 
+        =====================================================================-->
+
+</head>
+<body>
+	<div class="wrapper animsition">
+		<!-- main header -->
+		<div th:switch="${user.role}">
+			<header th:case="ADMIN" class="main-header" th:include="navbanner :: navbanner"></header>
+			<header th:case="EMPLOYEE" class="main-header" th:include="empbanner :: empbanner"></header>
+		</div>
+		<!-- /.content-wrapper -->
+		<div class="content-wrapper">
+			<div class="container">
+				<!-- main content -->
+				<div class="content">
+
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-bd lobidrag">
+								<div class="panel-heading">
+									<div class="panel-title">
+										<h4>Contacts List</h4>
+									</div>
+								</div>
+								<div class="panel-body">
+									<form th:action="@{/perform}" method="post">
+										<div class="table-responsive">
+											<table id="dataTableExample2"
+												class="table table-bordered table-striped table-hover">
+												<thead>
+													<tr>
+														<th>Select</th>
+														<th>Service</th>
+														<th>Name</th>
+														<th>User Group</th>
+														<th>Added On</th>
+														<th>Follow Up History</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="var:${contacts}">
+														<td><input type="checkbox" th:value="${var.id}"
+															name="id" /></td>
+														<td><a th:href="@{'/report/find/'+${var.id}}"
+															th:text="${var.userDetails.areaOfInterest}"
+															style="text-decoration: underline;"></a></td>
+														<td th:text="${var.name}"></td>
+														<td>Registered User</td>
+														<td th:text="${var.userDetails.raisedTime}"></td>
+														<td>
+															<button type="button"
+																class="glyphicon glyphicon-earphone" data-toggle="modal" id="tag<%=count++%>"
+																data-target="#modal-langProf"  th:value="${var.id}">
+																<i class="fa fa-plus"></i>
+															</button>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<button type="submit" name="do" value="comms">Communicate
+											to Selected</button>
+										<button type="submit" name="do" value="comma">Communicate
+											to All</button>
+										<button type="submit" name="do" value="delete">Delete
+											Selected User</button>
+									</form>
+								</div>
+								<div class="modal fade" id="modal-langProf" tabindex="-1"
+									role="dialog">
+									<div class="modal-dialog modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+												<h1 class="modal-title">Follow Up</h1>
+											</div>
+											<div class="modal-body ">
+													<div class="form-group">
+														<table
+															class="table table-bordered table-striped table-hover">
+															<thead>
+																<tr>
+																	<th>Sl</th>
+																	<th>Set By</th>
+																	<th>Sub Status</th>
+																	<th>Description</th>
+																	<th>Added On</th>
+																</tr>
+															</thead>
+															<tbody id="status">
+															</tbody>
+														</table>
+													</div>												
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+										<!-- /.modal-content -->
+									</div>
+									<!-- /.modal-dialog -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.main content -->
+			</div>
+			<!-- /.container -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- start footer -->
+		<footer class="main-footer">
+			<div class="container">
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 1.0
+				</div>
+				<strong>&copy; 2018 <a href="#">World Visa</a></strong> | All rights
+				reserved. 
+			</div>
+		</footer>
+	</div>
+	<!-- ./wrapper -->
+	<!-- jQuery -->
+	<script src="assets/plugins/jQuery/jquery-1.12.4.min.js"
+		type="text/javascript"></script>
+	<!-- jquery-ui -->
+	<script src="assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js"
+		type="text/javascript"></script>
+	<!-- Bootstrap js -->
+	<script src="assets/bootstrap/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<!-- lobipanel js -->
+	<script src="assets/plugins/lobipanel/lobipanel.min.js"
+		type="text/javascript"></script>
+	<!-- animsition js -->
+	<script src="assets/plugins/animsition/js/animsition.min.js"
+		type="text/javascript"></script>
+	<!-- bootsnav js -->
+	<script src="assets/plugins/bootsnav/js/bootsnav.js"
+		type="text/javascript"></script>
+	<!-- SlimScroll js -->
+	<script src="assets/plugins/slimScroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- FastClick js-->
+	<script src="assets/plugins/fastclick/fastclick.min.js"
+		type="text/javascript"></script>
+	<!-- End Core Plugins
+        =====================================================================-->
+	<!-- Start Page Lavel Plugins
+        =====================================================================-->
+	<!-- dataTables js -->
+	<script src="assets/datatables/dataTables.min.js"
+		type="text/javascript"></script>
+	<!-- Start Theme label Script
+        =====================================================================-->
+	<!-- Dashboard js -->
+	<script th:src="@{/assets/dist/js/dashboard.js}" type="text/javascript"></script>
+	<!-- End Theme label Script
+        =====================================================================-->
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							"use strict"; // Start of use strict
+
+							$("#dataTableExample2")
+									.DataTable(
+											{
+												dom : "<'row'<'col-sm-5'l><'col-sm-3 text-center'B><'col-sm-4'f>>tp",
+												"lengthMenu" : [
+														[ 10, 25, 50, -1 ],
+														[ 10, 25, 50, "All" ] ],
+												buttons : [ {
+													extend : 'excel',
+													title : 'Worldvisa_Report',
+													className : 'btn-sm'
+												}, {
+													extend : 'pdf',
+													title : 'Worldvisa_Report',
+													className : 'btn-sm'
+												}, {
+													extend : 'print',
+													className : 'btn-sm'
+												} ]
+											});
+							
+							$('button[id^="tag"]').on('click', function() {  
+							 
+							    $.ajax({
+									contentType : "application/json",
+									url : "/api/getStatus",
+									type : "POST",
+									data : this.value,
+									dataType : "json",
+									success : function(response){
+										for (var i in response){
+										      $("#status").append('<tr><td>'+response[i].caseStatusId+'</td><td>'+response[i].setBy+'</td><td>'+response[i].subStatus+'</td><td>'+response[i].description+'</td><td>'+response[i].setOn+'</td></tr>');
+										     }
+									} 
+									
+								});
+							});
+							
+							$('.modal').on('hidden.bs.modal', function () {
+								 location.reload();
+						    })
+
+						});
+		
+		
+	</script>
+
+</body>
+</html>

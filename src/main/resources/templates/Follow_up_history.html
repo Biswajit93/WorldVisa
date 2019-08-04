@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>World Visa | Follow Up History</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Favicon and touch icons -->
+<link rel="shortcut icon" th:href="@{/assets/dist/img/ico/favicon.png}"
+	type="image/x-icon">
+<link rel="apple-touch-icon" type="image/x-icon"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-57-precomposed.png}">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-72-precomposed.png}">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-114-precomposed.png}">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-144-precomposed.png}">
+
+<!-- Start Global Mandatory Style CSS-->
+<link th:href="@{/assets/dist/css/base.css}" rel="stylesheet"
+	type="text/css" />
+<link th:href="@{/assets/dist/css/component_ui.min.css}"
+	rel="stylesheet" type="text/css" />
+<link th:href="@{/assets/dist/css/custom.css}" rel="stylesheet"
+	type="text/css" />
+ <link th:href="@{/assets/datatables/dataTables.min.css}" rel="stylesheet" type="text/css"/>
+
+
+
+<style>
+.lobipanel .panel-heading .dropdown .dropdown-menu {
+	display: none !important;
+}
+</style>
+</head>
+<body>
+	<div class="wrapper animsition">
+
+		<header class="main-header" th:include="navbanner :: navbanner"></header>
+
+		<!-- /.content-wrapper -->
+		<div class="content-wrapper">
+			<div class="container">
+				<!-- main content -->
+				<div class="content">
+
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-bd lobidrag">
+								<div class="panel-heading">
+									<div class="panel-title">
+										<h4>Follow Up History</h4>
+									</div>
+								</div>
+								<div class="panel-body">
+
+									<div class="table-responsive">
+										<table id="dataTableExample2"
+											class="table table-bordered table-striped table-hover">
+											<thead>
+												<tr>
+													<th>ID</th>
+													<th>NAME</th>
+													<th>MESSAGE</th>													
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="var : ${followUpList}">
+													<td th:text="${var.followUpId}"></td>
+													<td th:text="${var.contactName}"></td>
+													<td th:text="${var.message}"></td>													
+												</tr>												
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.main content -->
+			</div>
+			<!-- /.container -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- start footer -->
+		<footer class="main-footer">
+			<div class="container">
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 1.0
+				</div>
+				<strong>&copy; 2018 <a href="#">World Visa</a></strong> | All rights
+				reserved. 
+			</div>
+		</footer>
+		<!-- /. footer -->
+	</div>
+	<!-- ./wrapper -->
+	<!-- jQuery -->
+	<script src="assets/plugins/jQuery/jquery-1.12.4.min.js"
+		type="text/javascript"></script>
+	<!-- jquery-ui -->
+	<script src="assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js"
+		type="text/javascript"></script>
+	<!-- Bootstrap js -->
+	<script src="assets/bootstrap/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<!-- lobipanel js -->
+	<script src="assets/plugins/lobipanel/lobipanel.min.js"
+		type="text/javascript"></script>
+	<!-- animsition js -->
+	<script src="assets/plugins/animsition/js/animsition.min.js"
+		type="text/javascript"></script>
+	<!-- bootsnav js -->
+	<script src="assets/plugins/bootsnav/js/bootsnav.js"
+		type="text/javascript"></script>
+	<!-- SlimScroll js -->
+	<script src="assets/plugins/slimScroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- FastClick js-->
+	<script src="assets/plugins/fastclick/fastclick.min.js"
+		type="text/javascript"></script>
+	<!-- End Core Plugins
+        =====================================================================-->
+	<!-- Start Page Lavel Plugins
+        =====================================================================-->
+	<!-- dataTables js -->
+	<script src="assets/datatables/dataTables.min.js"
+		type="text/javascript"></script>
+	<!-- Start Theme label Script
+        =====================================================================-->
+	<!-- Dashboard js -->
+	<script th:src="@{/assets/dist/js/dashboard.js}" type="text/javascript"></script>
+	<!-- End Theme label Script
+        =====================================================================-->
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							"use strict"; // Start of use strict
+
+							
+
+							$("#dataTableExample2")
+									.DataTable(
+											{
+												dom : "<'row'<'col-sm-5'l><'col-sm-3 text-center'B><'col-sm-4'f>>tp",
+												"lengthMenu" : [
+														[ 10, 25, 50, -1 ],
+														[ 10, 25, 50, "All" ] ],
+												buttons : [ {
+												    extend : 'excel',
+													title : 'Worldvisa_Report',
+													className : 'btn-sm'
+												}, {
+													extend : 'pdf',
+													title : 'Worldvisa_Report',
+													className : 'btn-sm'
+												}, {
+													extend : 'print',
+													className : 'btn-sm'
+												} ]
+											});
+
+						});
+	</script>
+	
+</body>
+</html>

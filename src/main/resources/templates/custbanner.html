@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<body>
+	<div th:fragment="custbanner">
+	<nav class="navbar top-nav">
+			<div class="container">
+				<div class="navbar-header hidden-xs">
+					<a class="navbar-brand" href="/index.html"> <img
+						src="/assets/dist/img/logo.png" alt=""></a>
+				</div>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li> <i class="ti-user" style="color:white;"></i>&nbsp; <span th:text="${user.email}" style="color:white;"></span></li>
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#"><i th:text="${user.email}" style="color:lime;"></i> <i
+							class="dropdowm-icon ti-settings"></i>
+					</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="/change_password"><i class="ti-settings"></i>&nbsp;
+									Change Password</a></li>
+							<li><a href="/index.html"><i
+									class="ti-layout-sidebar-left"></i>&nbsp; Logout</a></li>
+						</ul> <!-- /.dropdown-user --></li>
+					<!-- /.dropdown -->
+				</ul>
+				<!-- /.navbar-top-links -->
+			</div>
+			<!-- /. container -->
+		</nav>
+		</div>
+</body>
+</html>

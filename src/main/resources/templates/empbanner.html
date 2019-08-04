@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<body>
+	<div th:fragment="empbanner">
+		<!-- top navigation -->
+		<nav class="navbar top-nav">
+			<div class="container">
+				<div class="navbar-header hidden-xs">
+					<a class="navbar-brand" href="/index.html"> <img
+						src="/assets/dist/img/logo.png" alt=""></a>
+				</div>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li> <i class="ti-user" style="color:white;"></i>&nbsp; <span th:text="${user.email}" style="color:white;"></span></li>
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#"><i th:text="${user.email}" style="color:lime;"></i> <i
+							class="dropdowm-icon ti-settings"></i>
+					</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="/change_password"><i class="ti-settings"></i>&nbsp;
+									Change Password</a></li>
+							<li><a href="/index.html"><i
+									class="ti-layout-sidebar-left"></i>&nbsp; Logout</a></li>
+						</ul> <!-- /.dropdown-user --></li>
+					<!-- /.dropdown -->
+				</ul>
+				<!-- /.navbar-top-links -->
+			</div>
+			<!-- /. container -->
+		</nav>
+		<!-- /. top navigation -->
+		<!--  main navigation -->
+		<nav
+			class="navbar navbar-default navbar-mobile navbar-sticky bootsnav">
+			<!-- Start Top Search -->
+			<div class="top-search">
+				<div class="container">
+					<div class="input-group">
+						<span class="input-group-addon"><i class="ti-search"></i></span> <input
+							type="text" class="form-control" placeholder="Search"> <span
+							class="input-group-addon close-search"><i class="ti-close"></i></span>
+					</div>
+				</div>
+			</div>
+			<!-- End Top Search -->
+			<div class="container">
+				<!-- Start Header Navigation -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target="#navbar-menu">
+						<i class="fa fa-bars"></i>
+					</button>
+					<a class="navbar-brand hidden-md hidden-lg" href="#brand"><img
+						src="/assets/dist/img/light-logo.png" class="logo" alt=""></a>
+
+				</div>
+				<!-- End Header Navigation -->
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="navbar-menu">
+					<ul class="nav navbar-nav navbar-left" data-in="" data-out="">
+						<li><a href="/notification.html"><i class="ti-home"></i>
+								Dashboard</a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"><i class="ti-pencil-alt"></i> Data
+								Management</a>
+							<ul class="dropdown-menu">
+								<li><a href="/fill_a_form.html"><i class="ti-clipboard"></i>
+										Fill a Form</a></li>
+								<li><a href="/active_assignments.html"><i
+										class="ti-upload"></i> Active Assignments</a></li>
+								<li><a href="/completed.html"><i
+										class="ti-upload"></i> Completed Assignments</a></li>
+							</ul></li>
+						<li class="dropdown"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown"><i
+								class="ti-user"></i> My Space</a>
+							<ul class="dropdown-menu">
+								<!-- <li><a href="/daily_reporting.html"><i
+										class="fa fa-table"></i> Daily Reports</a></li> -->
+								<li><a href="/my_collegues.html"><i
+										class="ti-layout-tab-window"></i> My Colleagues</a></li>
+							</ul></li>
+
+						
+
+
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"><i class="ti-ruler-pencil"></i> Market
+								Space</a>
+							<ul class="dropdown-menu">
+								<!-- <li><a href="/list_groups.html"><i
+										class="fa fa-file-text-o"></i>List Groups</a></li> -->
+								<li><a href="/list_contacts.html"><i
+										class="fa fa-hourglass-o"></i> List Contacts</a></li>
+								<li><a href="/list_template"><i
+										class="fa fa-hourglass-end"></i> List Templates</a></li>
+								<li><a href="/add_contacts.html"><i class="fa fa-usd"></i>
+										Add Contact</a></li>
+								<li><a href="/add_template.html"><i
+										class="fa fa-sliders"></i> Add Template</a></li>
+								<li><a href="/social/all"><i
+										class="fa fa-sliders"></i> Social Contacts</a></li>
+
+							</ul></li>
+						
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+
+		</nav>
+		<!-- /. main navigation -->
+		<div class="clearfix"></div>
+	</div>
+	<!-- /. main header -->
+	
+</body>
+</html>

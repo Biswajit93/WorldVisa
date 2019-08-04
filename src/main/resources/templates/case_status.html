@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="header :: header">
+
+<title>World Visa | Case Status</title>
+
+
+<!-- Start page Label Plugins 
+        =====================================================================-->
+<!-- dataTables css -->
+<link href="assets/datatables/dataTables.min.css"
+	rel="stylesheet" type="text/css" />
+<!-- End page Label Plugins 
+        =====================================================================-->
+
+</head>
+<body>
+	<div class="wrapper animsition">
+		<!-- main header -->
+		<div th:switch="${user.role}">
+			<header th:case="ADMIN" class="main-header" th:include="navbanner :: navbanner"></header>
+			<header th:case="CUSTOMER" class="main-header" th:include="custbanner :: custbanner"></header>
+			<header th:case="EMPLOYEE" class="main-header" th:include="empbanner :: empbanner"></header>
+		</div>
+		<!-- /.content-wrapper -->
+		<div class="content-wrapper">
+			<div class="container">
+				<!-- main content -->
+				<div class="content">
+
+
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-bd lobidrag">
+								<div class="panel-heading">
+									<div class="col-sm-8">
+									<div class="panel-title">
+										<h4>
+											<i class="pe-7s-note2"></i>Case Status
+										</h4>
+									</div>
+									</div>
+									
+									<div class="col-sm-4" style="float: right">
+										<div class="panel-title">
+<a th:href="@{'/report/find/'+${report.id}}">Basic Details</a> | <a href="/payment">Payment</a> | <a href="/document">Documents</a> <!-- | <a href="/userNotification">Report Notification</a> -->
+											<!--<div class="input-group">
+												<span class="input-group-addon"><strong><span
+														class="ti-direction-alt"></span> Jump To</strong></span> <select
+													onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+													<option value="/payment">select</option>
+													<option value="/payment">Payment</option>
+													<option value="/documents">Documents</option>
+													<option value="/case_status">Case Status</option>
+													<option value="/userNotification">Report Notification</option>
+												</select>
+											</div>-->
+
+
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+
+									<div class="table-responsive">
+										<table id="dataTableExample2"
+											class="table table-bordered table-striped table-hover">
+											<thead>
+												<tr>
+													<th>Sl</th>
+													<th>Set By</th>
+													<th>Sub Status</th>
+													<th>Description</th>
+													<th>Added On</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="var : ${caseStatusList}">
+													<td th:text="${var.caseStatusId}"></td>
+													<td th:text="${var.setBy}"></td>
+													<td th:text="${var.subStatus}"></td>
+													<td th:text="${var.description}"></td>
+													<td th:text="${var.setOn}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<button class="btn" value="" data-toggle="modal"
+										data-target="#modal-casestatus">Add Case Status</button>
+								</div>
+							</div>
+							<div class="modal fade" id="modal-casestatus" tabindex="-1"
+								role="dialog">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h1 class="modal-title">Case Status</h1>
+										</div>
+										<form  class="form" th:action="@{/case_status}" th:object="${caseStatus}" method="post">
+										<div class="modal-body">											
+												<div class="form-group">
+													<label >Sub-Status*</label> <select class="form-control" th:field="*{subStatus}">
+													<option value="">Select</option>
+													<option th:each="var : ${subStatusList}" th:text="${var}" th:value="${var}"></option>
+													</select>
+												</div>
+												<div class="form-group">
+													<label >Description*</label><textarea class="form-control" th:field="*{description}"></textarea> 
+												</div>											
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger"
+												data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-success"
+												id="lang-prof-submit">Save</button>
+										</div>
+										</form>
+									</div>
+									<!-- /.modal-content -->
+								</div>
+								<!-- /.modal-dialog -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.main content -->
+			</div>
+			<!-- /.container -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- start footer -->
+		<!-- start footer -->
+		<footer class="main-footer">
+			<div class="container">
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 1.0
+				</div>
+				<strong>&copy; 2018 <a href="#">World Visa</a></strong> | All rights
+				reserved. 
+			</div>
+		</footer>
+		<!-- /. footer -->
+	</div>
+	<!-- ./wrapper -->
+	<!-- jQuery -->
+	<script src="assets/plugins/jQuery/jquery-1.12.4.min.js"
+		type="text/javascript"></script>
+	<!-- jquery-ui -->
+	<script src="assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js"
+		type="text/javascript"></script>
+	<!-- Bootstrap js -->
+	<script src="assets/bootstrap/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<!-- lobipanel js -->
+	<script src="assets/plugins/lobipanel/lobipanel.min.js"
+		type="text/javascript"></script>
+	<!-- animsition js -->
+	<script src="assets/plugins/animsition/js/animsition.min.js"
+		type="text/javascript"></script>
+	<!-- bootsnav js -->
+	<script src="assets/plugins/bootsnav/js/bootsnav.js"
+		type="text/javascript"></script>
+	<!-- SlimScroll js -->
+	<script src="assets/plugins/slimScroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- FastClick js-->
+	<script src="assets/plugins/fastclick/fastclick.min.js"
+		type="text/javascript"></script>
+	<!-- End Core Plugins
+        =====================================================================-->
+	<!-- Start Page Lavel Plugins
+        =====================================================================-->
+<!-- dataTables js -->
+	<script src="assets/datatables/dataTables.min.js"
+		type="text/javascript"></script>
+	<!-- Start Theme label Script
+        =====================================================================-->
+	<!-- Dashboard js -->
+	<script th:src="@{/assets/dist/js/dashboard.js}" type="text/javascript"></script>
+	<!-- End Theme label Script
+        =====================================================================-->
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							"use strict"; // Start of use strict
+
+							
+
+							$("#dataTableExample2")
+									.DataTable(
+											{
+												dom : "<'row'<'col-sm-5'l><'col-sm-3 text-center'B><'col-sm-4'f>>tp",
+												"lengthMenu" : [
+														[ 10, 25, 50, -1 ],
+														[ 10, 25, 50, "All" ] ],
+												buttons : [ {
+												    extend : 'excel',
+													title : 'Worldvisa_Report',
+													className : 'btn-sm'
+												}, {
+													extend : 'pdf',
+													title : 'Worldvisa_Report',
+													className : 'btn-sm'
+												}, {
+													extend : 'print',
+													className : 'btn-sm'
+												} ]
+											});
+
+						});
+	</script>
+	
+</body>
+</html>

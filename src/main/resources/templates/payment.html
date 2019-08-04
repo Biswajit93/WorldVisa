@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>World Visa | User Details</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Favicon and touch icons -->
+<link rel="shortcut icon" th:href="@{/assets/dist/img/ico/favicon.png}"
+	type="image/x-icon">
+<link rel="apple-touch-icon" type="image/x-icon"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-57-precomposed.png}">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-72-precomposed.png}">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-114-precomposed.png}">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
+	th:href="@{/assets/dist/img/ico/apple-touch-icon-144-precomposed.png}">
+
+<!-- Start Global Mandatory Style CSS-->
+<link th:href="@{/assets/dist/css/base.css}" rel="stylesheet"
+	type="text/css" />
+<link th:href="@{/assets/dist/css/component_ui.min.css}"
+	rel="stylesheet" type="text/css" />
+<link th:href="@{/assets/dist/css/custom.css}" rel="stylesheet"
+	type="text/css" />
+<link th:href="@{/assets/plugins/datatables/dataTables.min.css}"
+	rel="stylesheet" type="text/css" />
+<link th:href="@{/assets/plugins/summernote/summernote.css}"
+	rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+<script th:src="@{/assets/plugins/bootstrap-wizard/jquery.min.js}"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"
+	type="text/javascript"></script>
+
+<!-- Multiselect -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" />
+<style>
+.f1-step {
+	width: 20.00%;
+}
+
+.center {
+	text-align: center;
+	width: inherit;
+}
+
+.gutter {
+	margin-top: 25px;
+}
+
+.form {
+	max-width: 480px;
+	margin: 0 auto;
+}
+
+.tab-container {
+	overflow-x: auto;
+}
+
+.sm-gutter {
+	margin-top: 12px;
+}
+
+#family-details, #relatives-details {
+	display: none;
+}
+
+.lobipanel .panel-heading .dropdown .dropdown-menu {
+	display: none !important;
+}
+</style>
+
+
+</head>
+<body>
+	<div class="wrapper animsition">
+		<!-- main header -->
+		<div th:switch="${user.role}">
+			<header th:case="ADMIN" class="main-header" th:include="navbanner :: navbanner"></header>
+			<header th:case="CUSTOMER" class="main-header" th:include="custbanner :: custbanner"></header>
+			<header th:case="EMPLOYEE" class="main-header" th:include="empbanner :: empbanner"></header>
+		</div>
+		<!-- /. main header -->
+		<!-- /.content-wrapper -->
+		<div class="content-wrapper">
+			<div class="container">
+
+				<div class="content">
+					<!-- Content Header (Page header) -->
+
+					<!-- /. Content Header (Page header) -->
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-bd lobidrag">
+								<div class="panel-heading">
+								<div class="col-sm-8">
+									<div class="panel-title">
+										<h4>
+											<i class="pe-7s-note2"></i>Payment Options
+										</h4>
+									</div>
+									</div>
+									
+									<div class="col-sm-4" style="float: right">
+										<div class="panel-title">
+<a th:href="@{'/report/find/'+${report.id}}">Basic Details</a> | <a href="/document">Documents</a> | <a href="/case_status">Case Status</a> <!-- | <a href="/userNotification">Report Notification</a> -->
+											<!--<div class="input-group">
+												<span class="input-group-addon"><strong><span
+														class="ti-direction-alt"></span> Jump To</strong></span> <select
+													onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+													<option value="/payment">select</option>
+													<option value="/payment">Payment</option>
+													<option value="/documents">Documents</option>
+													<option value="/case_status">Case Status</option>
+													<option value="/userNotification">Report Notification</option>
+												</select>
+											</div>-->
+
+
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+
+									<div class="row">
+										<form th:action="@{/payment}" method="post" id="payment"
+											novalidate class="f1">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label for="fileNo" class="col-sm-3 col-form-label">File
+														Number</label>
+													<div class="col-sm-9">
+														<span th:text="${report.id}"></span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="reqType" class="col-sm-3 col-form-label">Request
+														Type</label>
+													<div class="col-sm-9">
+														<span th:text="${report.userDetails.areaOfInterest}"></span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="teleNo" class="col-sm-3 col-form-label">Additional
+														Service</label>
+													<div class="col-sm-9">
+														<div th:switch="${paymentEntered}">
+															<p th:case="null">
+																<select class="form-control" id="addService"
+																	th:field="${payment.additionalServices}" data-required
+																	data-message="Please select an Option!">
+																	<option value="">Select</option>
+																	<option th:each="type : ${additionalServicesList}"
+																		th:value="${type}" th:text="${type}">Wireframe</option>
+																</select>
+															</p>
+															<p th:case="*">
+																<span th:text="${payment.additionalServices}"></span>
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="costOfService" class="col-sm-3 col-form-label">Cost
+														Of Service</label>
+													<div class="col-sm-9">
+														<!-- <input class="form-control" type="Address" id="addressLine1">-->
+														<div th:switch="${paymentEntered}">
+															<p th:case="null">
+																<input type="text" class="form-control" data-required
+																	th:field="${payment.costOfService}">
+															</p>
+															<p th:case="*">
+																<span th:text="${payment.costOfService}"></span>
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="netPay" class="col-sm-3 col-form-label">Net
+														Payable</label>
+													<div class="col-sm-9">
+														<!-- <input class="form-control" type="Address" id="addressLine1">-->
+														<div th:switch="${paymentEntered}">
+															<p th:case="null"></p>
+															<p th:case="*">
+																<span th:text="${payment.netPayable}"></span>
+															</p>
+														</div>
+
+													</div>
+												</div>
+
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label for="countryInt" class="col-sm-3 col-form-label">Country
+														of Interest</label>
+													<div class="col-sm-9">
+														<span th:text="${countryList}"></span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="noOfVisa" class="col-sm-3 col-form-label">Number
+														of Visas to be processed</label>
+													<div class="col-sm-9">
+														<div th:switch="${paymentEntered}">
+															<p th:case="null">
+																<input class="form-control" type="text" id="noOfVisa"
+																	data-required th:value="1"
+																	th:field="${payment.numberOfVisa}">
+															</p>
+															<p th:case="*">
+																<span th:text="${payment.numberOfVisa}"></span>
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="payOpt" class="col-sm-3 col-form-label">Payment
+														Option</label>
+													<div class="col-sm-9">
+														<div th:switch="${paymentEntered}">
+															<p th:case="null">
+																<select class="form-control" id="payOpt"
+																	th:field="${payment.paymentOption}" data-required
+																	data-message="Please select an Option!">
+																	<option value="">select...</option>
+																	<option th:each="type : ${paymentOptionList}"
+																		th:value="${type}" th:text="${type}">Wireframe</option>
+																</select>
+															</p>
+															<p th:case="*">
+																<span th:text="${payment.paymentOption}"></span>
+															</p>
+														</div>
+
+													</div>
+												</div>
+												<div class="form-group row">
+													<label for="tax" class="col-sm-3 col-form-label">Tax</label>
+													<div class="col-sm-9">
+														<div th:switch="${paymentEntered}">
+															<p th:case="null">
+																<input class="form-control" type="text" id="tax"
+																	data-required th:field="${payment.tax}">
+															</p>
+															<p th:case="*">
+																<span th:text="${payment.tax}"></span>
+															</p>
+														</div>
+													</div>
+												</div>
+
+
+											</div>
+											<div class="col-md-12" style="float: center">
+												<div th:switch="${paymentEntered}">
+													<p th:case="null">
+														<button type="submit" class="btn btn-primary">Freeze
+															Payment Options</button>
+													</p>
+													<p th:case="*"></p>
+												</div>
+
+											</div>
+										</form>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<!-- /.main content -->
+				<!-- main content -->
+				<form th:action="@{/paymentEntry}" method="post" id="paymentEntry"
+					novalidate class="f1">
+					<div class="content">
+						<!-- Content Header (Page header) -->
+
+						<!-- /. Content Header (Page header) -->
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="panel panel-bd lobidrag">
+									<div class="panel-heading">
+										<div class="panel-title">
+										<div class="col-sm-10">
+											<h4>
+												<i class="pe-7s-note2"></i>New Payments List
+											</h4>
+											</div>
+											<div class="col-sm-2">
+											<button type="button" style="float: right;"
+												class="btn btn-primary" data-toggle="modal"
+												data-target="#pay-modal">
+												<i class="fa fa-plus"></i>
+											</button>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+
+										<div class="col-xs-11 tab-container">
+											<div class="form-group row">
+												<table class="table gutter" id="payment-tab">
+													<thead>
+														<tr class="tab-head">															
+														</tr>
+													</thead>
+													<tbody class="tab-body">														
+													</tbody>
+												</table>
+												<button type="submit" id="sub4"
+													class="btn btn-success btn-submit">Submit</button>
+
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</form>
+				<div class="row">
+							<div class="col-sm-12">
+								<div class="panel panel-bd lobidrag">
+									<div class="panel-heading">
+										<div class="panel-title">
+										<div class="col-sm-10">
+											<h4>
+												<i class="pe-7s-note2"></i>Payments Done List
+											</h4>
+											</div>											
+										</div>
+									</div>
+									<div class="panel-body">
+
+										<div class="col-xs-11 tab-container">
+											<div class="form-group row">
+												<table class="table gutter" >
+													<thead>
+														<tr >
+														<th>ID</th>
+														<th>Transaction Date</th>
+														<th>Mode</th>
+														<th>Cheque/DD No.</th>
+														<th>Amount</th>
+														<th>Remarks</th>															
+														</tr>
+													</thead>
+													<tbody>
+														<tr
+															th:each="var:${report.userDetails.paymentTransactionList}">
+															<td th:text="${var.ID}"></td>
+															<td th:text="${var.TransactionDate}"></td>
+															<td th:text="${var.Mode}"></td>
+															<td th:text="${var.ChequeorDDNumber}"></td>
+															<td th:text="${var.Amount}"></td>
+															<td th:text="${var.Remarks}"></td>															
+														</tr>
+													</tbody>
+												</table>												
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+				
+				<div th:switch="${paymentEntered}">
+			<div class="content">
+			<div class="row">
+			 <div class="col-sm-12">
+				<div class="panel panel-bd lobidrag">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<h4><i class="pe-7s-note2"></i>Payment Schedule</h4>
+						</div>
+					</div>
+					<div class="table-responsive">
+						<table id="dataTableExample3"
+							class="table table-bordered table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Amount</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="var:${userPaymentList}">
+									<td th:text="${var.TransactionDate}"></td>
+									<td th:text="${var.Amount}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				</div>
+				</div>
+				</div>
+			</div>
+				<!-- main content -->
+			</div>
+			<!-- /.container -->
+			<div class="modal fade" id="pay-modal" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h1 class="modal-title">Add New Payment</h1>
+							<h3 align="justify"><i>Please Double Check the data being entered as it is not editable</i></h3>
+						</div>
+						<div class="modal-body">
+							<form id="pay-form" class="form">
+								<div class="form-group">
+									<label form="payment">ID*</label> <input class="form-control"
+										type="text" id="pay-id" data-required />
+								</div>
+								<div class="form-group">
+									<label form="payment">Transaction Date*</label> <input
+										class="form-control" type="date" id="pay-date" data-required />
+								</div>
+								<div class="form-group">
+									<label form="payment">Payment Mode*</label><select
+										class="form-control modes" data-required
+										data-message="Please select an Option!" id="pay-mode">
+										<option value="">Select</option>
+									</select>
+								</div>
+								<div class="form-group" id="CQDD" style="display: none;">
+									<label form="payment">Cheque/DD No*</label> <input
+										class="form-control" type="text" id="pay-no" />
+								</div>
+								<div class="form-group">
+									<label form="payment">Amount*</label> <input
+										class="form-control" type="text" id="pay-amt" data-required />
+								</div>
+								<div class="form-group">
+									<label form="payment">Remarks</label> <input
+										class="form-control" type="text" id="pay-rem" />
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-success"
+								id="pay-form-submit">Save changes</button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			
+			
+			
+			
+			
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- start footer -->
+		<footer class="main-footer">
+			<div class="container">
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 1.0
+				</div>
+				<strong>&copy; 2018 <a href="#">Worl Visa</a></strong> | All rights
+				reserved. </strong>
+			</div>
+		</footer>
+		<!-- /. footer -->
+	</div>
+	<!-- ./wrapper -->
+	<!-- jQuery -->
+	<script th:src="@{assets/plugins/jQuery/jquery-1.12.4.min.js}"
+		type="text/javascript"></script>
+	<!-- jquery-ui -->
+	<script th:src="@{assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js}"
+		type="text/javascript"></script>
+	<!-- Bootstrap js -->
+	<script th:src="@{assets/bootstrap/js/bootstrap.min.js}"
+		type="text/javascript"></script>
+	<!-- lobipanel js -->
+	<script th:src="@{assets/plugins/lobipanel/lobipanel.min.js}"
+		type="text/javascript"></script>
+	<!-- animsition js -->
+	<script th:src="@{assets/plugins/animsition/js/animsition.min.js}"
+		type="text/javascript"></script>
+	<!-- bootsnav js -->
+	<script th:src="@{assets/plugins/bootsnav/js/bootsnav.js}"
+		type="text/javascript"></script>
+	<!-- SlimScroll js -->
+	<script th:src="@{assets/plugins/slimScroll/jquery.slimscroll.min.js}"
+		type="text/javascript"></script>
+	<!-- FastClick js-->
+	<script th:src="@{assets/plugins/fastclick/fastclick.min.js}"
+		type="text/javascript"></script>
+		<script th:src="@{assets/plugins/bootstrap-wizard/form.scripts.js}"
+		type="text/javascript"></script>
+	<script th:src="@{assets/plugins/bootstrap-wizard/main.js}"
+		type="text/javascript"></script>
+	<!-- End Core Plugins
+        =====================================================================-->
+	<!-- Start Page Lavel Plugins
+        =====================================================================-->
+	<!-- Form  wizard js -->
+	<script
+		th:src="@{assets/plugins/bootstrap-wizard/jquery.backstretch.min.js}"
+		type="text/javascript"></script>	
+
+	<!-- Start Theme label Script
+        =====================================================================-->
+	<!-- Dashboard js -->
+	<script th:src="@{assets/dist/js/dashboard.js}" type="text/javascript"></script>
+	<!-- End Theme label Script
+        =====================================================================-->
+	<script type="text/javascript">
+	$( document ).ready(function() {
+		$('#pay-mode').on('change',function () {
+	    	if($(this).val()=='Cash'||$(this).val()=='Online'||$(this).val()=='Credit Card'){
+	    		$("#CQDD").hide();
+	    	}
+	    	else{
+	    		$("#CQDD").show();
+	    	} 
+		})
+	});
+	</script>
+</body>
+
+</html>

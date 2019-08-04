@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>World Visa | Fill a Form</title>
+<!-- Meta -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Favicon and touch icons -->
+<link rel="shortcut icon" href="/assets/dist/img/ico/favicon.png" type="image/x-icon">
+<link rel="apple-touch-icon" type="image/x-icon" href="/assets/dist/img/ico/apple-touch-icon-57-precomposed.png">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="/assets/dist/img/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="/assets/dist/img/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="/assets/dist/img/ico/apple-touch-icon-144-precomposed.png">
+
+<!-- Start Global Mandatory Style CSS-->
+<link th:href="@{assets/dist/css/base.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{assets/dist/css/component_ui.min.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{assets/dist/css/custom.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{assets/plugins/summernote/summernote.css}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" th:href="@{assets/plugins/bootstrap-wizard/bootstrap.min.css}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" />
+<link th:href="@{assets/dist/css/component_ui.min.css}" rel="stylesheet" type="text/css" />
+
+<!-- Start Mandatory JS-->
+<script th:src="@{/assets/plugins/bootstrap-wizard/jquery.min.js}"></script>
+<script type="text/JavaScript" th:src="@{/assets/plugins/bootstrap-wizard/state.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js" type="text/javascript"></script>
+
+<!-- Multiselect -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" />
+
+<!-- Font -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+.f1-step {
+width: 20.00%;
+}
+.lobipanel .panel-heading .dropdown .dropdown-menu {
+display: none !important;
+}
+.center {
+text-align: center; width: inherit;
+}
+.gutter {
+margin-top: 25px;
+}
+.form {
+max-width: 480px; 
+margin: 0 auto;
+}
+.tab-container {
+overflow-x: auto;
+}
+.sm-gutter {
+margin-top: 12px;
+}
+#family-details, #relatives-details {
+display: none;
+}
+</style>
+</head>
+<body>
+	<div class="wrapper animsition">
+		<!-- main header -->
+		<div th:switch="${user.role}">
+			<header th:case="ADMIN" class="main-header" th:include="navbanner :: navbanner"></header>
+			<header th:case="EMPLOYEE" class="main-header" th:include="empbanner :: empbanner"></header>
+		</div>
+		<!-- /. main header -->
+		<!-- /.content-wrapper -->
+		<div class="content-wrapper">
+			<div class="container">
+				<!-- main content -->
+				<div class="content">
+					<!-- Content Header (Page header) -->
+					<!-- /. Content Header (Page header) -->
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-bd lobidrag">
+								<div class="panel-heading">
+									<div class="panel-title">
+										<h4>
+											<i class="pe-7s-note2"></i>Fill a Form - Customer Details
+										</h4>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div
+											class="col-sm-12 col-md-8 col-md-offset-2 col-lg-10 col-lg-offset-1 text-center">
+											<form th:action="@{/fill_a_form}" method="post"
+												id="search-formNew" novalidate class="f1">
+												<div class="f1-steps">
+													<div class="f1-progress">
+														<div class="f1-progress-line" data-now-value="12.66"
+															data-number-of-steps="5" style="width: 12.66%;"></div>
+													</div>
+													<div class="f1-step active">
+														<div class="f1-step-icon">
+															<i class="fa fa-user"></i>
+														</div>
+														<p>Basic Details</p>
+													</div>
+													<div class="f1-step">
+														<div class="f1-step-icon">
+															<i class="fa fa-key"></i>
+														</div>
+														<p>Personal Details</p>
+													</div>
+													<div class="f1-step">
+														<div class="f1-step-icon">
+															<i class="fa fa-twitter"></i>
+														</div>
+														<p>Family Details</p>
+													</div>
+													<div class="f1-step">
+														<div class="f1-step-icon">
+															<i class="fa fa-key"></i>
+														</div>
+														<p>Education and Work Experience</p>
+													</div>
+													<div class="f1-step">
+														<div class="f1-step-icon">
+															<i class="fa fa-key"></i>
+														</div>
+														<p>Social</p>
+													</div>
+												</div>
+												<br />
+												<fieldset>
+													<div class="row">
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label for="countryPref" class="col-sm-4 col-form-label">Country
+																	Preference<small>*</small>
+																</label>
+																<div class="col-sm-8">
+																	<select class="form-control selectpicker" multiple id="countryPref"																		
+																		th:field="${userdetails.countryList}" data-required
+																		data-message="Please select your Country Preference!">
+																		<option th:each="type : ${countryList}"
+																			th:value="${type}" th:text="${type}">Wireframe</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label for="areaOfInt" class="col-sm-4 col-form-label">Area
+																	Of Interest<small>*</small>
+																</label>
+																<div class="col-sm-8">
+																	<select class="form-control" id="areaOfInt"
+																		data-toggle="validator"
+																		th:field="${userdetails.areaOfInterest}" data-required
+																		data-message="Please select your Area of Interest!">
+																		<option value="">Select</option>
+																		<option th:each="type : ${areaOfInterestList}"
+																			th:value="${type}" th:text="${type}">Wireframe</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label for="editableByClient"
+																	class="col-sm-4 col-form-label">Editable By
+																	Client<small>*</small>
+																</label>
+																<div class="col-sm-8">
+																	<select class="form-control" id="editableByClient"
+																		th:field="${userdetails.editableByClient}"
+																		data-required data-message="Please select an Option!">
+																		<option value="">Select</option>
+																		<option th:each="type : ${editableByClientList}"
+																			th:value="${type}" th:text="${type}">Wireframe</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label for="requestMode" class="col-sm-4 col-form-label">Request
+																	Mode<small>*</small>
+																</label>
+																<div class="col-sm-8">
+																	<select class="form-control" id="requestMode"
+																		th:field="${userdetails.requestMode}" data-required
+																		data-message="Please select an Option!">
+																		<option value="">Select</option>
+																		<option th:each="type : ${requestModeList}"
+																			th:value="${type}" th:text="${type}">Wireframe</option>
+
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="f1-buttons">
+														<button type="button" class="btn btn-success btn-next">Next</button>
+													</div>
+												</fieldset>
+												<fieldset>
+													<div class="row">
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label for="name" class="col-sm-3 col-form-label">Name</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="text" id="name"
+																		th:field="${userInformation.name}" data-required>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="mobileNo" class="col-sm-3 col-form-label">Mobile</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="number" id="mobileNo"
+																		th:field="${userInformation.mobilenumber}"
+																		data-required data-mobile>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="teleNo" class="col-sm-3 col-form-label">Landline</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="tel"
+																		th:field="${userInformation.landline}" id="teleNo">
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="addressLine1"
+																	class="col-sm-3 col-form-label">Address Line</label>
+																<div class="col-sm-9">
+																	<!-- <input class="form-control" type="Address" id="addressLine1">-->
+																	<input type="text" class="form-control"
+																		th:field="${userInformation.addressline1}"
+																		data-required>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="addressLine1"
+																	class="col-sm-3 col-form-label">Address Line</label>
+																<div class="col-sm-9">
+																	<!-- <input class="form-control" type="Address" id="addressLine1">-->
+																	<input type="text"
+																		th:field="${userInformation.addressline2}"
+																		class="form-control">
+																</div>
+															</div>
+
+														</div>
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label for="city" class="col-sm-3 col-form-label">City</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="text" id="city"
+																		th:field="${userInformation.city}" data-required>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="state" class="col-sm-3 col-form-label">State</label>
+																<div class="col-sm-9">
+																	<select class="form-control"  id="listBox" onchange='selct_district(this.value)'
+																		th:field="${userInformation.state}" data-required></select>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="state" class="col-sm-3 col-form-label">District</label>
+																<div class="col-sm-9">
+																	<select class="form-control"  id="secondlist"
+																		th:field="${userInformation.district}" data-required></select>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="country" class="col-sm-3 col-form-label">Country</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="text" id="country"
+																		th:field="${userInformation.country}" data-required>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="date" class="col-sm-3 col-form-label">Date
+																	of Birth</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="date"
+																		th:field="${userInformation.dateofbirth}" id="date"
+																		data-required>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label for="email" class="col-sm-3 col-form-label">Email</label>
+																<div class="col-sm-9">
+																	<input class="form-control" type="email" 
+																		th:field="${userInformation.emailAddress}" id="email" data-required><span id="valid"></span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- In Progress Start -->
+													<div class="col-xs-11 tab-container">
+														<div class="form-group row">
+															<label for="lang-prof" class="center">Language
+																Proficiency
+																<button type="button" class="btn btn-primary"
+																	data-toggle="modal" data-target="#modal-langProf">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</label>
+
+															<table class="table gutter" id="lang-prof-tab">
+																<thead>
+																	<tr class="tab-head">
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody class="tab-body">
+																</tbody>
+															</table>
+
+														</div>
+													</div>
+													<div class="col-xs-11 tab-container">
+														<div class="form-group row">
+															<label for="lang-prof" class="center">Test Scores
+																<button type="button" class="btn btn-primary"
+																	data-toggle="modal" data-target="#modal-test">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</label>
+
+															<table class="table gutter" id="test-tab">
+																<thead>
+																	<tr class="tab-head">
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody class="tab-body">
+																</tbody>
+															</table>
+														</div>
+
+													</div>
+													<!-- In Progress End -->
+													<div class="f1-buttons">
+														<button type="button" class="btn btn-previous">Previous</button>
+														<button type="button" class="btn btn-success btn-next" id="n2">Next</button>
+													</div>
+													<br /> <br />
+												</fieldset>
+
+												<fieldset>
+
+													<div class="form-group row">
+														<label for="requestMode" class="col-sm-3 col-form-label">Marital
+															Status<small>*</small>
+														</label>
+														<div class="col-sm-9">
+															<select class="form-control" id="marital-stat"
+																th:field="${userInformation.maritalStatus}"
+																data-required data-message="Please select an Option!">
+																<option value="">Select</option>
+																<option th:each="type : ${maritalStatusList}"
+																	th:value="${type}" th:text="${type}">Wireframe</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-xs-11 tab-container tab-toggle"
+														id="family-details">
+														<div class="form-group row">
+															<label for="lang-prof" class="center">Family
+																Details
+																<button type="button" class="btn btn-primary"
+																	data-toggle="modal" data-target="#modal-family">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</label>
+
+															<table class="table gutter" id="family-tab">
+																<thead>
+																	<tr class="tab-head">
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody class="tab-body">
+																</tbody>
+															</table>
+														</div>
+													</div>
+													<div class="col-xs-11 tab-container tab-toggle"
+														id="relatives-details">
+														<div class="form-group row">
+															<label for="lang-prof" class="center">Relatives
+																Abroad
+																<button type="button" class="btn btn-primary"
+																	data-toggle="modal" data-target="#modal-relative">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</label>
+
+															<table class="table gutter" id="rel-tab">
+																<thead>
+																	<tr class="tab-head">
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody class="tab-body">
+																</tbody>
+															</table>
+														</div>
+													</div>
+													<div class="f1-buttons">
+														<button type="button" class="btn btn-previous">Previous</button>
+														<button type="submit" id="sub1"
+															class="btn btn-success btn-submit">Submit</button>
+														<button type="button" class="btn btn-success btn-next">Next</button>
+													</div>
+													<br /> <br />
+												</fieldset>
+												<fieldset>
+
+													<div class="col-xs-11 tab-container">
+														<div class="form-group row">
+															<label for="lang-prof" class="center">Education
+																Background
+																<button type="button" class="btn btn-primary"
+																	data-toggle="modal" data-target="#modal-edu">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</label>
+
+															<table class="table gutter" id="edu-tab">
+																<thead>
+																	<tr class="tab-head">
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody class="tab-body">
+																</tbody>
+															</table>
+														</div>
+													</div>
+													<div class="col-xs-11 tab-container">
+														<div class="form-group row">
+															<label for="lang-prof" class="center">Work
+																Experience
+																<button type="button" class="btn btn-primary"
+																	data-toggle="modal" data-target="#modal-work">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</label>
+
+															<table class="table gutter" id="work-tab">
+																<thead>
+																	<tr class="tab-head">
+																		<th>Actions</th>
+																	</tr>
+																</thead>
+																<tbody class="tab-body">
+																</tbody>
+															</table>
+														</div>
+													</div>
+													<div class="f1-buttons">
+														<button type="button" class="btn btn-previous">Previous</button>
+														<button type="submit" id="sub2"
+															class="btn btn-success btn-submit">Submit</button>
+														<button type="button" class="btn btn-success btn-next">Next</button>
+													</div>
+													<br /> <br />
+												</fieldset>
+												<fieldset>
+
+													<div class="row">
+														<div class="form-group row">
+															<label for="requestMode" class="col-sm-4 col-form-label">How
+																did you hear about us?</label>
+															<div class="col-sm-6">
+																<select class="form-control" id="marital-stat"
+																	th:field="${userdetails.hearAboutUs}">
+																	<option value="">Select</option>
+																	<option th:each="type : ${hearAboutUsList}"
+																		th:value="${type}" th:text="${type}">Wireframe</option>
+																</select>
+															</div>
+														</div>
+														<p>Refer a Friend and Get Rewarded
+														<div class="form-group row">
+															<label for="requestMode" class="col-sm-4 col-form-label">Name</label>
+															<div class="col-sm-6">
+																<input class="form-control" type="text" value=""
+																	th:field="${userdetails.friendName}"
+																	id="example-text-input">
+															</div>
+														</div>
+														<div class="form-group row">
+															<label for="requestMode" class="col-sm-4 col-form-label">Mobile
+																Number?</label>
+															<div class="col-sm-6">
+																<input class="form-control" type="text" value=""
+																	th:field="${userdetails.mobileNumber}"
+																	id="example-text-input">
+															</div>
+														</div>
+													</div>
+													<div class="f1-buttons">
+														<button type="button" class="btn btn-previous">Previous</button>
+														<button type="submit" id="sub3"
+															class="btn btn-success btn-submit">Submit</button>
+													</div>
+												</fieldset>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="modal-langProf" tabindex="-1"
+						role="dialog">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h1 class="modal-title">Language Proficiency</h1>
+								</div>
+								<div class="modal-body">
+									<form id="lang-prof-form" class="form">
+										<div class="form-group">
+											<label form="lang">Language*</label> <select
+												class="form-control lang" data-required
+												data-message="Please select an Option!" id="lang">
+												<option value="">Select</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label form="speaking">Speaking Level*</label> <select
+												class="form-control grade" data-required
+												data-message="Please select an Option!" id="speak">
+												<option value="">Select</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label form="writing">Writing Level*</label> <select
+												class="form-control grade" data-required
+												data-message="Please select an Option!" id="write">
+												<option value="">Select</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label form="reading">Reading Level*</label> <select
+												class="form-control grade" data-required
+												data-message="Please select an Option!" id="read">
+												<option value="">Select</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label form="lang">Interpretation*</label> <select
+												class="form-control grade" data-required
+												data-message="Please select an Option!" id="inter">
+												<option value="">Select</option>
+											</select>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-success"
+										id="lang-prof-submit">Save changes</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+					<div class="modal fade" id="modal-test" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h1 class="modal-title">Test Scores</h1>
+								</div>
+								<div class="modal-body">
+									<form id="test-form" class="form">
+										<div class="form-group">
+											<label form="lang">Test Name*</label> <input
+												class="form-control" type="text" id="test-name"
+												data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Test Score*</label> <input
+												class="form-control" type="number" id="test-score"
+												data-required />
+										</div>
+										<div class="form-group">
+											<label form="writing">Test Date*</label> <input
+												class="form-control" type="date" id="test-date"
+												data-required />
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-success"
+										id="test-form-submit">Save changes</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+					<div class="modal fade" id="modal-relative" tabindex="-1"
+						role="dialog">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h1 class="modal-title">Relative Abroad</h1>
+								</div>
+								<div class="modal-body">
+									<form id="rel-form" class="form">
+										<div class="form-group">
+											<label form="lang">Relative's Name*</label> <input
+												class="form-control" type="text" id="rel-name" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Relation*</label> <input
+												class="form-control" type="text" id="rel-rel" data-required />
+										</div>
+										<div class="form-group">
+											<label form="writing">City, Country*</label> <input
+												class="form-control" type="text" id="rel-city-country"
+												data-required />
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-success"
+										id="relative-form-submit">Save changes</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+					<div class="modal fade" id="modal-family" tabindex="-1"
+						role="dialog">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h1 class="modal-title">Family Details</h1>
+								</div>
+								<div class="modal-body">
+									<form id="family-form" class="form">
+										<div class="form-group">
+											<label form="lang">Name*</label> <input class="form-control"
+												type="text" id="family-name" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Relation*</label> <input
+												class="form-control" type="text" id="family-rel"
+												data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Date Of Birth*</label> <input
+												class="form-control" type="date" id="family-dob"
+												data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Highest Degree*</label> <input
+												class="form-control" type="text" id="family-deg"
+												data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Work Experience (Years)*</label> <input
+												class="form-control" type="number" id="family-work-exp"
+												data-required />
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-success"
+										id="family-form-submit">Save changes</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+					<div class="modal fade" id="modal-edu" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h1 class="modal-title">education Background</h1>
+								</div>
+								<div class="modal-body">
+									<form id="edu-form" class="form">
+										<div class="form-group">
+											<label form="lang">From*</label> <input class="form-control"
+												type="date" id="edu-frm" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">To*</label> <input
+												class="form-control" type="date" id="edu-to" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">University*</label> <input
+												class="form-control" type="text" id="edu-univ" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Degree*</label> <input
+												class="form-control" type="text" id="edu-deg" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Discipline*</label> <input
+												class="form-control" type="text" id="edu-disc" data-required />
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-success"
+										id="edu-form-submit">Save changes</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+					<div class="modal fade" id="modal-work" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h1 class="modal-title">Work Experience</h1>
+								</div>
+								<div class="modal-body">
+									<form id="work-form" class="form">
+										<div class="form-group">
+											<label form="lang">From*</label> <input class="form-control"
+												type="date" id="work-frm" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">To*</label> <input
+												class="form-control" type="date" id="work-to" data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Employer Name & Address*</label> <input
+												class="form-control" type="text" id="emp-name-addr"
+												data-required />
+										</div>
+										<div class="form-group">
+											<label form="speaking">Designation*</label> <input
+												class="form-control" type="text" id="work-desig"
+												data-required />
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-success"
+										id="work-form-submit">Save changes</button>
+								</div>
+							</div>
+
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+				</div>
+				<!-- /.main content -->
+			</div>
+			<!-- /.container -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- start footer -->
+         <footer class="main-footer">
+            <div class="container">
+               <div class="pull-right hidden-xs">
+                  <b>Version</b> 1.0
+               </div>
+                <strong>&copy; 2018 <a href="#">World Visa</a></strong> | All rights reserved.
+               </strong>
+            </div>
+         </footer>
+         <!-- /. footer -->
+	</div>
+	<!-- ./wrapper -->
+	<!-- jQuery -->
+	<script th:src="@{assets/plugins/jQuery/jquery-1.12.4.min.js}"
+		type="text/javascript"></script>
+	<!-- jquery-ui -->
+	<script th:src="@{assets/plugins/jquery-ui-1.12.1/jquery-ui.min.js}"
+		type="text/javascript"></script>
+	<!-- Bootstrap js -->
+	<script th:src="@{assets/bootstrap/js/bootstrap.min.js}"
+		type="text/javascript"></script>
+	<!-- lobipanel js -->
+	<script th:src="@{assets/plugins/lobipanel/lobipanel.min.js}"
+		type="text/javascript"></script>
+	<!-- animsition js -->
+	<script th:src="@{assets/plugins/animsition/js/animsition.min.js}"
+		type="text/javascript"></script>
+	<!-- bootsnav js -->
+	<script th:src="@{assets/plugins/bootsnav/js/bootsnav.js}"
+		type="text/javascript"></script>
+	<!-- SlimScroll js -->
+	<script th:src="@{assets/plugins/slimScroll/jquery.slimscroll.min.js}"
+		type="text/javascript"></script>
+	<!-- FastClick js-->
+	<script th:src="@{assets/plugins/fastclick/fastclick.min.js}"
+		type="text/javascript"></script>
+	<!-- End Core Plugins
+         =====================================================================-->
+	<!-- Start Page Lavel Plugins
+         =====================================================================-->
+	<!-- Form  wizard js -->
+	<script
+		th:src="@{assets/plugins/bootstrap-wizard/jquery.backstretch.min.js}"
+		type="text/javascript"></script>
+	<script th:src="@{assets/plugins/bootstrap-wizard/form.scripts.js}"
+		type="text/javascript"></script>	
+	<!-- Start Theme label Script
+         =====================================================================-->
+	<script th:src="@{assets/plugins/bootstrap-wizard/main.js}"
+		type="text/javascript"></script>
+	<!-- Start Theme label Script
+         =====================================================================-->
+	<!-- Dashboard js -->
+	<script th:src="@{assets/dist/js/dashboard.js}" type="text/javascript"></script>
+	<!-- End Theme label Script
+         =====================================================================-->
+	<script type="text/javascript">
+
+		$("#email").blur(function(){
+			
+			  $.ajax({
+				contentType : "text/plain",
+				url : "/api/checkEmail",
+				type : "POST",
+				data : this.value,				
+				success : function(response){
+					if(response=="NONE"){
+						$("#valid").text("");
+					}					
+					if(response=="EXISTS"){
+						$("#valid").text(response);
+						$("#n2").attr("disabled", true);							
+					}
+					else{
+						$("#valid").text(response);
+						$("#n2").removeAttr("disabled");
+					}
+				},				
+				 error : function(e){
+					console.log("ERROR",e);
+				} 
+			}) 
+		
+	});
+		
+	
+	</script>
+</body>
+</html>
